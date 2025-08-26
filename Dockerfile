@@ -1,18 +1,12 @@
-FROM golang:1.20-buster AS build
+FROM golang:1.23
 
 WORKDIR /app
 
-COPY . ./
-
+COPY go.mod go.sum ./
 RUN go mod download
 
+COPY . .
+
 RUN go build -o /bin/app
-
-FROM ubuntu:22.04
-
-
-COPY --from=build /bin/app /bin
-
-EXPOSE 8000
 
 CMD ["/bin/app"]
